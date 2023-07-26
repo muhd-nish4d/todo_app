@@ -36,7 +36,7 @@ class ScreenPhoneNumber extends StatelessWidget {
                   FirebaseAuth.instance.signInAnonymously().then((user) {
                     log('User logged in anonymously');
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const ScreenTodos(),
+                      builder: (context) =>  ScreenTodos(),
                     ));
                   }).catchError((error) {
                     log('Error logging in anonymously: $error');

@@ -10,7 +10,9 @@ import 'package:todoapp/utils/utils.dart';
 import '../detail/todo_detail.dart';
 
 class ScreenTodos extends StatelessWidget {
-  const ScreenTodos({super.key});
+  ScreenTodos({super.key});
+
+  final ValueNotifier<bool> isCompleted = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +36,21 @@ class ScreenTodos extends StatelessWidget {
                         startActionPane: ActionPane(
                           motion: const ScrollMotion(),
                           dismissible: DismissiblePane(onDismissed: () {
-                            log('hi');
+                            Provider.of<TodoListProvider>(context,
+                                    listen: false)
+                                .completeTodo(eachTodo);
                           }),
                           children: [
                             SlidableAction(
-                              onPressed: (context) {},
+                              onPressed: (context) {
+                                Provider.of<TodoListProvider>(context,
+                                        listen: false)
+                                    .completeTodo(eachTodo);
+                              },
                               backgroundColor:
                                   const Color(0xFFFE4A49).withOpacity(.0),
-                              foregroundColor: Colors.red,
-                              icon: Icons.delete,
+                              foregroundColor: Colors.green,
+                              label: 'Completed',
                             ),
                           ],
                         ),
@@ -50,7 +58,6 @@ class ScreenTodos extends StatelessWidget {
                           motion: const ScrollMotion(),
                           children: [
                             SlidableAction(
-                              flex: 2,
                               onPressed: (context) {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ScreenCostamize(
@@ -62,6 +69,17 @@ class ScreenTodos extends StatelessWidget {
                                   const Color(0xFF7BC043).withOpacity(.0),
                               foregroundColor: Colors.blue,
                               icon: Icons.edit,
+                            ),
+                            SlidableAction(
+                              onPressed: (context) {
+                                Provider.of<TodoListProvider>(context,
+                                        listen: false)
+                                    .deleteTodo(eachTodo);
+                              },
+                              backgroundColor:
+                                  const Color(0xFFFE4A49).withOpacity(.0),
+                              foregroundColor: Colors.red,
+                              icon: Icons.delete,
                             ),
                           ],
                         ),
@@ -75,13 +93,16 @@ class ScreenTodos extends StatelessWidget {
                           child: Card(
                             color: Colors.white12,
                             child: ListTile(
-                              leading: Checkbox(
-                                value: false,
-                                onChanged: (value) {},
-                              ),
                               title: Text(eachTodo.title, style: textHeadings),
                               subtitle: Text(eachTodo.description,
                                   style: textDescriptions),
+                              trailing: PopupMenuButton(
+                                color: Colors.black,
+                                itemBuilder: (context) => const [
+                                  PopupMenuItem(child: Text('Edit')),
+                                  PopupMenuItem(child: Text('Delete'))
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -91,77 +112,6 @@ class ScreenTodos extends StatelessWidget {
                   );
           },
         ),
-        // FutureBuilder(
-        //   future: Utils.getCurrentUserTodos(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.hasData) {
-        //       return ListView.builder(
-        //         padding: const EdgeInsets.all(10),
-        //         itemBuilder: (context, index) {
-        //           final eachTodo = snapshot.data![index];
-        //           return Slidable(
-        //             key: UniqueKey(),
-        //             startActionPane: ActionPane(
-        //               motion: const ScrollMotion(),
-        //               dismissible: DismissiblePane(onDismissed: () {
-        //                 log('hi');
-        //               }),
-        //               children: [
-        //                 SlidableAction(
-        //                   onPressed: (context) {},
-        //                   backgroundColor:
-        //                       const Color(0xFFFE4A49).withOpacity(.0),
-        //                   foregroundColor: Colors.red,
-        //                   icon: Icons.delete,
-        //                 ),
-        //               ],
-        //             ),
-        //             endActionPane: ActionPane(
-        //               motion: const ScrollMotion(),
-        //               children: [
-        //                 SlidableAction(
-        //                   flex: 2,
-        //                   onPressed: (context) {
-        //                     Navigator.of(context).push(MaterialPageRoute(
-        //                         builder: (context) =>
-        //                             ScreenCostamize(isEdit: true)));
-        //                   },
-        //                   backgroundColor:
-        //                       const Color(0xFF7BC043).withOpacity(.0),
-        //                   foregroundColor: Colors.blue,
-        //                   icon: Icons.edit,
-        //                 ),
-        //               ],
-        //             ),
-        //             child: InkWell(
-        //               onTap: () {
-        //                 Navigator.of(context).push(MaterialPageRoute(
-        //                   builder: (context) =>
-        //                       ScreenTodoDetail(todoDetail: eachTodo),
-        //                 ));
-        //               },
-        //               child: Card(
-        //                 color: Colors.white12,
-        //                 child: ListTile(
-        //                   leading: Checkbox(
-        //                     value: false,
-        //                     onChanged: (value) {},
-        //                   ),
-        //                   title: Text(eachTodo.title, style: textHeadings),
-        //                   subtitle: Text(eachTodo.description,
-        //                       style: textDescriptions),
-        //                 ),
-        //               ),
-        //             ),
-        //           );
-        //         },
-        //         itemCount: snapshot.data!.length,
-        //       );
-        //     } else {
-        //       return const Center(child: CircularProgressIndicator());
-        //     }
-        //   },
-        // ),
         floatingActionButton: ElevatedButton.icon(
             style:
                 ElevatedButton.styleFrom(backgroundColor: Colors.purple[900]),

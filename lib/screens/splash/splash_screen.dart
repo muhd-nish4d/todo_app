@@ -23,7 +23,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
         if (user != null) {
           Provider.of<TodoListProvider>(context, listen: false)
               .getCurrentUserTodos();
-          return const ScreenTodos();
+          return ScreenTodos();
         } else {
           return ScreenPhoneNumber();
         }

@@ -26,7 +26,7 @@ class ScreenTodoDetail extends StatelessWidget {
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(10),
           child: Text(
-            todoDetail.description,
+            "${todoDetail.description} ${todoDetail.isCompleted ? 'completed' : 'uncompleted'}",
             style: textDescriptions,
           ),
         ));

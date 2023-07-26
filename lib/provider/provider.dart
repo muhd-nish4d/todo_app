@@ -73,4 +73,52 @@ class TodoListProvider extends ChangeNotifier {
       log('Error updating todo field: $e');
     }
   }
+
+  void deleteTodo(TodoModel todo) async {
+    try {
+      final querySnapshot = await firestore
+          .collection('users')
+          .doc(currentUser!.uid)
+          .collection('todos')
+          .where('title', isEqualTo: todo.title)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        final documentRef = querySnapshot.docs.first.reference;
+
+        documentRef.delete();
+        log('Deleted');
+
+        todoList.clear();
+        getCurrentUserTodos();
+      } else {
+        log('No todo found with the given title.');
+      }
+    } catch (e) {
+      log('Error updating todo field: $e');
+    }
+  }
+
+  void completeTodo(TodoModel todo) async {
+    try {
+      final querySnapshot = await firestore
+          .collection('users')
+          .doc(currentUser!.uid)
+          .collection('todos')
+          .where('title', isEqualTo: todo.title)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        final documentRef = querySnapshot.docs.first.reference;
+
+        documentRef.update({'isCompleted': true});
+        log('isCompleted updated');
+
+        todoList.clear();
+        getCurrentUserTodos();
+      } else {
+        log('No todo found with the given title.');
+      }
+    } catch (e) {
+      log('Error updating todo field: $e');
+    }
+  }
 }
