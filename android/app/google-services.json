@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "507601619937",
+    "project_id": "todoapp-nish4d",
+    "storage_bucket": "todoapp-nish4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507601619937:android:67c67612e27b49ff6e60a0",
+        "android_client_info": {
+          "package_name": "com.nishad.todoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507601619937-nd105b3sqmtp2tld3lilqgg1b9f3clrg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ-rC86J7K_CRLQAz3yZIWtoEZFKeHGqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507601619937-nd105b3sqmtp2tld3lilqgg1b9f3clrg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
