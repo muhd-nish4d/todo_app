@@ -1,16 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/constants/fonts/font_decerations.dart';
+import 'package:todoapp/model/todo_model.dart';
 
 class ScreenTodoDetail extends StatelessWidget {
-  const ScreenTodoDetail({super.key});
+  const ScreenTodoDetail({super.key, required this.todoDetail});
+  final TodoModel todoDetail;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text(
-              'Title',
+            title: Text(
+              todoDetail.title,
               style: textHeadings,
             ),
             backgroundColor: Colors.black,
@@ -21,10 +23,10 @@ class ScreenTodoDetail extends StatelessWidget {
                 color: Colors.white,
               ),
             )),
-        body: const SingleChildScrollView(
-          padding: EdgeInsets.all(10),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(10),
           child: Text(
-            'Description',
+            todoDetail.description,
             style: textDescriptions,
           ),
         ));
