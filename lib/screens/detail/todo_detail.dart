@@ -13,11 +13,13 @@ class ScreenTodoDetail extends StatelessWidget {
         appBar: AppBar(
             title: Text(
               todoDetail.title,
-              style: textHeadings,
+              style: textHeadingsUncompletd,
             ),
             backgroundColor: Colors.black,
             leading: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: const Icon(
                 CupertinoIcons.chevron_back,
                 color: Colors.white,
@@ -26,7 +28,7 @@ class ScreenTodoDetail extends StatelessWidget {
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(10),
           child: Text(
-            "${todoDetail.description} ${todoDetail.isCompleted ? 'completed' : 'uncompleted'}",
+            todoDetail.description,
             style: textDescriptions,
           ),
         ));

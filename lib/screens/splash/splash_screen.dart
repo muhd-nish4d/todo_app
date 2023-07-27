@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todoapp/provider/provider.dart';
+import 'package:todoapp/provider/todo_provider.dart';
 import 'package:todoapp/screens/authentication/phone_number.dart';
 import 'package:todoapp/screens/home/todos.dart';
 

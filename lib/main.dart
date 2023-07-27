@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/constants/color/colors.dart';
-import 'package:todoapp/provider/provider.dart';
+import 'package:todoapp/provider/todo_provider.dart';
 import 'package:todoapp/screens/splash/splash_screen.dart';
 
 Future<void> main() async {

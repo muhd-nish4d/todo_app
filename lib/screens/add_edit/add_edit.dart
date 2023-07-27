@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/constants/fonts/font_decerations.dart';
 import 'package:todoapp/model/todo_model.dart';
-import 'package:todoapp/provider/provider.dart';
+import 'package:todoapp/provider/todo_provider.dart';
 import 'package:todoapp/utils/utils.dart';
 
 class ScreenCostamize extends StatelessWidget {
@@ -24,14 +24,16 @@ class ScreenCostamize extends StatelessWidget {
         backgroundColor: Colors.black,
         centerTitle: true,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: const Icon(
               CupertinoIcons.back,
               color: Colors.white,
             )),
         title: Text(
           isEdit ? 'Edit' : 'Add',
-          style: textHeadings,
+          style: textHeadingsUncompletd,
         ),
       ),
       body: SingleChildScrollView(

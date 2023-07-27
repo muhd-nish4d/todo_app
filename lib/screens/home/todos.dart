@@ -1,13 +1,11 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/constants/fonts/font_decerations.dart';
-import 'package:todoapp/provider/provider.dart';
+import 'package:todoapp/provider/todo_provider.dart';
 import 'package:todoapp/screens/add_edit/add_edit.dart';
+import 'package:todoapp/screens/home/widgets/todo_card.dart';
 import 'package:todoapp/utils/utils.dart';
-
-import '../detail/todo_detail.dart';
 
 class ScreenTodos extends StatelessWidget {
   ScreenTodos({super.key});
@@ -19,8 +17,60 @@ class ScreenTodos extends StatelessWidget {
     // log(todoDetails.length.toString());
     log(Utils.currentUser!.uid);
     return Scaffold(
+        drawer: Drawer(
+          backgroundColor: Colors.grey[900],
+          child: Consumer<TodoListProvider>(
+            builder: (context, value, child) {
+              return Column(
+                children: [
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    color: Colors.black,
+                    child: SafeArea(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          DrawerTodoStatus(
+                              color: Colors.green,
+                              count: value.todoListCompleted.length.toString(),
+                              label: 'Completed'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              DrawerTodoStatus(
+                                  color: Colors.red,
+                                  count:
+                                      value.todoListpending.length.toString(),
+                                  label: 'Pending'),
+                              DrawerTodoStatus(
+                                  color: Colors.white,
+                                  count: value.todoList.length.toString(),
+                                  label: 'Total'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Provider.of<TodoListProvider>(context, listen: false)
+                          .userSignOut(context);
+                    },
+                    title: const Text(
+                      'LogOut',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                ],
+              );
+            },
+          ),
+        ),
         appBar: AppBar(
-          title: const Text('Todos', style: textHeadings),
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: const Text('Todos', style: textHeadingsUncompletd),
           // centerTitle: true,
           backgroundColor: Colors.black,
         ),
@@ -31,82 +81,9 @@ class ScreenTodos extends StatelessWidget {
                 : ListView.builder(
                     itemBuilder: (context, index) {
                       final eachTodo = value.todoList[index];
-                      return Slidable(
-                        key: UniqueKey(),
-                        startActionPane: ActionPane(
-                          motion: const ScrollMotion(),
-                          dismissible: DismissiblePane(onDismissed: () {
-                            Provider.of<TodoListProvider>(context,
-                                    listen: false)
-                                .completeTodo(eachTodo);
-                          }),
-                          children: [
-                            SlidableAction(
-                              onPressed: (context) {
-                                Provider.of<TodoListProvider>(context,
-                                        listen: false)
-                                    .completeTodo(eachTodo);
-                              },
-                              backgroundColor:
-                                  const Color(0xFFFE4A49).withOpacity(.0),
-                              foregroundColor: Colors.green,
-                              label: 'Completed',
-                            ),
-                          ],
-                        ),
-                        endActionPane: ActionPane(
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              onPressed: (context) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ScreenCostamize(
-                                          isEdit: true,
-                                          oldTodo: eachTodo,
-                                        )));
-                              },
-                              backgroundColor:
-                                  const Color(0xFF7BC043).withOpacity(.0),
-                              foregroundColor: Colors.blue,
-                              icon: Icons.edit,
-                            ),
-                            SlidableAction(
-                              onPressed: (context) {
-                                Provider.of<TodoListProvider>(context,
-                                        listen: false)
-                                    .deleteTodo(eachTodo);
-                              },
-                              backgroundColor:
-                                  const Color(0xFFFE4A49).withOpacity(.0),
-                              foregroundColor: Colors.red,
-                              icon: Icons.delete,
-                            ),
-                          ],
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  ScreenTodoDetail(todoDetail: eachTodo),
-                            ));
-                          },
-                          child: Card(
-                            color: Colors.white12,
-                            child: ListTile(
-                              title: Text(eachTodo.title, style: textHeadings),
-                              subtitle: Text(eachTodo.description,
-                                  style: textDescriptions),
-                              trailing: PopupMenuButton(
-                                color: Colors.black,
-                                itemBuilder: (context) => const [
-                                  PopupMenuItem(child: Text('Edit')),
-                                  PopupMenuItem(child: Text('Delete'))
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
+                      return eachTodo.isCompleted
+                          ? const SizedBox()
+                          : TodoCard(eachTodo: eachTodo);
                     },
                     itemCount: value.todoList.length,
                   );
@@ -128,5 +105,34 @@ class ScreenTodos extends StatelessWidget {
               'Add Todo',
               style: TextStyle(color: Colors.white),
             )));
+  }
+}
+
+class DrawerTodoStatus extends StatelessWidget {
+  const DrawerTodoStatus({
+    super.key,
+    required this.count,
+    required this.label,
+    required this.color,
+  });
+  final String count;
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          count,
+          style: TextStyle(
+              color: color, fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white),
+        ),
+      ],
+    );
   }
 }
