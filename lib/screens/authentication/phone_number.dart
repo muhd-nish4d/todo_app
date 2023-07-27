@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todoapp/constants/fonts/font_decerations.dart';
+import 'package:todoapp/provider/login_provider.dart';
 import 'package:todoapp/screens/home/todos.dart';
 
 class ScreenPhoneNumber extends StatelessWidget {
@@ -52,16 +54,23 @@ class ScreenPhoneNumber extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurpleAccent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  child: const Text(
-                    'Send OTP',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                Consumer<LoginProvider>(
+                  builder: (context, value, child) => value.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : ElevatedButton(
+                          onPressed: () {
+                            value.submittedPhoneNumber(
+                                phoneNumberController.text, context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.deepPurpleAccent,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: const Text(
+                            'Send OTP',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                 ),
                 TextButton(
                     onPressed: () {
